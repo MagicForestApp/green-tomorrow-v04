@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
 import "./App.css";
 
 function App() {
@@ -153,301 +154,303 @@ function App() {
       </footer>
 
       {/* Donation Modal */}
-      <AnimatePresence>
-        {isOpen && (
-          <Dialog
-            static
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-            className="relative z-50"
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={() => setIsOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            {/* Backdrop */}
-            <motion.div 
-              className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
+            <div className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm" />
+          </Transition.Child>
 
-            {/* Modal positioning */}
-            <div className="fixed inset-0 flex items-center justify-center p-4">
-              {/* Modal panel */}
-              <Dialog.Panel 
-                as={motion.div}
-                className="glass-panel w-full max-w-md p-6 overflow-hidden"
-                initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                transition={{ type: "spring", bounce: 0.3 }}
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Title className="text-xl font-bold text-white mb-6 text-center">
-                  {isSuccess
-                    ? "Thank You for Your Donation!"
-                    : donationStep === 1
-                    ? "Choose Donation Type"
-                    : donationStep === 2
-                    ? "Select Amount"
-                    : "Complete Donation"}
-                </Dialog.Title>
+                <Dialog.Panel className="glass-panel w-full max-w-md p-6 overflow-hidden transform transition-all">
+                  <Dialog.Title className="text-xl font-bold text-white mb-6 text-center">
+                    {isSuccess
+                      ? "Thank You for Your Donation!"
+                      : donationStep === 1
+                      ? "Choose Donation Type"
+                      : donationStep === 2
+                      ? "Select Amount"
+                      : "Complete Donation"}
+                  </Dialog.Title>
 
-                {/* Stepper */}
-                {!isSuccess && (
-                  <div className="flex items-center justify-center mb-6">
-                    {[1, 2, 3].map((step) => (
-                      <div key={step} className="flex items-center">
-                        <div 
-                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                            donationStep >= step 
-                              ? 'bg-forest-500 text-white' 
-                              : 'bg-dark-700 text-dark-400'
-                          }`}
-                        >
-                          {step}
-                        </div>
-                        {step < 3 && (
+                  {/* Stepper */}
+                  {!isSuccess && (
+                    <div className="flex items-center justify-center mb-6">
+                      {[1, 2, 3].map((step) => (
+                        <div key={step} className="flex items-center">
                           <div 
-                            className={`w-10 h-1 mx-1 ${
-                              donationStep > step 
-                                ? 'bg-forest-500' 
-                                : 'bg-dark-700'
+                            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                              donationStep >= step 
+                                ? 'bg-forest-500 text-white' 
+                                : 'bg-dark-700 text-dark-400'
                             }`}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Success message */}
-                {isSuccess && (
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-forest-500 rounded-full mx-auto flex items-center justify-center mb-4">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <p className="mb-4">Your donation of ${customAmount || donationAmount} has been received!</p>
-                    <p className="mb-6 text-white/70">A receipt has been sent to your email.</p>
-                    <div className="flex gap-3 justify-center">
-                      <button 
-                        onClick={() => setIsOpen(false)}
-                        className="btn btn-outline py-2 text-sm"
-                      >
-                        Close
-                      </button>
-                      <button 
-                        className="btn btn-primary py-2 text-sm"
-                      >
-                        Register & Personalize Tree
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 1: Donation Type */}
-                {!isSuccess && donationStep === 1 && (
-                  <div>
-                    <div className="bg-dark-800/50 p-3 rounded-xl flex mb-6">
-                      <button 
-                        className={`flex-1 py-2 rounded-lg transition-colors ${
-                          donationType === 'one-time' 
-                            ? 'bg-dark-700 text-white' 
-                            : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
-                        }`}
-                        onClick={() => setDonationType('one-time')}
-                      >
-                        One-time
-                      </button>
-                      <button 
-                        className={`flex-1 py-2 rounded-lg transition-colors ${
-                          donationType === 'monthly' 
-                            ? 'bg-dark-700 text-white' 
-                            : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
-                        }`}
-                        onClick={() => setDonationType('monthly')}
-                      >
-                        Monthly
-                      </button>
-                    </div>
-                    
-                    <div className="text-center mb-4">
-                      <p className="mb-2 text-white/70">
-                        {donationType === 'one-time' 
-                          ? 'Make a one-time contribution to our forest initiative' 
-                          : 'Support us with a recurring monthly donation'}
-                      </p>
-                    </div>
-                    
-                    <div className="flex justify-between mt-8">
-                      <button 
-                        onClick={() => setIsOpen(false)}
-                        className="text-white/50 hover:text-white"
-                      >
-                        Cancel
-                      </button>
-                      <button 
-                        onClick={() => setDonationStep(2)}
-                        className="btn btn-primary py-2 px-5"
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 2: Select Amount */}
-                {!isSuccess && donationStep === 2 && (
-                  <div>
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                      {[10, 25, 50, 100].map((amount) => (
-                        <button
-                          key={amount}
-                          className={`py-3 rounded-lg border-2 transition-all ${
-                            donationAmount === amount && !customAmount
-                              ? 'border-forest-500 bg-forest-500/20 text-white'
-                              : 'border-dark-700 text-white/80 hover:border-forest-400 hover:text-white'
-                          }`}
-                          onClick={() => handleAmountSelect(amount)}
-                        >
-                          ${amount}
-                        </button>
+                          >
+                            {step}
+                          </div>
+                          {step < 3 && (
+                            <div 
+                              className={`w-10 h-1 mx-1 ${
+                                donationStep > step 
+                                  ? 'bg-forest-500' 
+                                  : 'bg-dark-700'
+                              }`}
+                            />
+                          )}
+                        </div>
                       ))}
                     </div>
-                    
-                    <div className="mb-4">
-                      <label className="block text-sm font-medium text-white/70 mb-1">
-                        Or enter custom amount
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <span className="text-white/60">$</span>
-                        </div>
-                        <input
-                          type="text"
-                          value={customAmount}
-                          onChange={handleCustomAmountChange}
-                          className="block w-full pl-8 pr-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
-                          placeholder="Custom amount"
-                        />
+                  )}
+
+                  {/* Success message */}
+                  {isSuccess && (
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-forest-500 rounded-full mx-auto flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <p className="mb-4">Your donation of ${customAmount || donationAmount} has been received!</p>
+                      <p className="mb-6 text-white/70">A receipt has been sent to your email.</p>
+                      <div className="flex gap-3 justify-center">
+                        <button 
+                          onClick={() => setIsOpen(false)}
+                          className="btn btn-outline py-2 text-sm"
+                        >
+                          Close
+                        </button>
+                        <button 
+                          className="btn btn-primary py-2 text-sm"
+                        >
+                          Register & Personalize Tree
+                        </button>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center mb-6">
-                      <input
-                        id="plant-tree"
-                        type="checkbox"
-                        checked={plantTree}
-                        onChange={() => setPlantTree(!plantTree)}
-                        className="h-4 w-4 rounded border-dark-600 text-forest-500 focus:ring-forest-500"
-                      />
-                      <label htmlFor="plant-tree" className="ml-2 block text-sm text-white/80">
-                        This donation will plant a tree on our map
-                      </label>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <button 
-                        onClick={() => setDonationStep(1)}
-                        className="text-white/50 hover:text-white"
-                      >
-                        Back
-                      </button>
-                      <button 
-                        onClick={() => setDonationStep(3)}
-                        className="btn btn-primary py-2 px-5"
-                        disabled={!donationAmount && !customAmount}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  )}
 
-                {/* Step 3: Email and Payment */}
-                {!isSuccess && donationStep === 3 && (
-                  <form onSubmit={handleSubmitDonation}>
-                    <div className="mb-6">
+                  {/* Step 1: Donation Type */}
+                  {!isSuccess && donationStep === 1 && (
+                    <div>
+                      <div className="bg-dark-800/50 p-3 rounded-xl flex mb-6">
+                        <button 
+                          className={`flex-1 py-2 rounded-lg transition-colors ${
+                            donationType === 'one-time' 
+                              ? 'bg-dark-700 text-white' 
+                              : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
+                          }`}
+                          onClick={() => setDonationType('one-time')}
+                        >
+                          One-time
+                        </button>
+                        <button 
+                          className={`flex-1 py-2 rounded-lg transition-colors ${
+                            donationType === 'monthly' 
+                              ? 'bg-dark-700 text-white' 
+                              : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
+                          }`}
+                          onClick={() => setDonationType('monthly')}
+                        >
+                          Monthly
+                        </button>
+                      </div>
+                      
+                      <div className="text-center mb-4">
+                        <p className="mb-2 text-white/70">
+                          {donationType === 'one-time' 
+                            ? 'Make a one-time contribution to our forest initiative' 
+                            : 'Support us with a recurring monthly donation'}
+                        </p>
+                      </div>
+                      
+                      <div className="flex justify-between mt-8">
+                        <button 
+                          onClick={() => setIsOpen(false)}
+                          className="text-white/50 hover:text-white"
+                        >
+                          Cancel
+                        </button>
+                        <button 
+                          onClick={() => setDonationStep(2)}
+                          className="btn btn-primary py-2 px-5"
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 2: Select Amount */}
+                  {!isSuccess && donationStep === 2 && (
+                    <div>
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        {[10, 25, 50, 100].map((amount) => (
+                          <button
+                            key={amount}
+                            className={`py-3 rounded-lg border-2 transition-all ${
+                              donationAmount === amount && !customAmount
+                                ? 'border-forest-500 bg-forest-500/20 text-white'
+                                : 'border-dark-700 text-white/80 hover:border-forest-400 hover:text-white'
+                            }`}
+                            onClick={() => handleAmountSelect(amount)}
+                          >
+                            ${amount}
+                          </button>
+                        ))}
+                      </div>
+                      
                       <div className="mb-4">
                         <label className="block text-sm font-medium text-white/70 mb-1">
-                          Email (Optional)
+                          Or enter custom amount
                         </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span className="text-white/60">$</span>
+                          </div>
+                          <input
+                            type="text"
+                            value={customAmount}
+                            onChange={handleCustomAmountChange}
+                            className="block w-full pl-8 pr-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
+                            placeholder="Custom amount"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center mb-6">
                         <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="block w-full px-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
-                          placeholder="your.email@example.com"
+                          id="plant-tree"
+                          type="checkbox"
+                          checked={plantTree}
+                          onChange={() => setPlantTree(!plantTree)}
+                          className="h-4 w-4 rounded border-dark-600 text-forest-500 focus:ring-forest-500"
                         />
-                        <p className="mt-1 text-sm text-white/50">We'll send your receipt to this address</p>
+                        <label htmlFor="plant-tree" className="ml-2 block text-sm text-white/80">
+                          This donation will plant a tree on our map
+                        </label>
                       </div>
                       
-                      <div className="mb-4">
-                        <div className="p-4 bg-dark-800/50 rounded-lg">
-                          <div className="flex justify-between mb-2">
-                            <span className="text-white/70">Donation amount:</span>
-                            <span className="font-medium">${customAmount || donationAmount}</span>
+                      <div className="flex justify-between">
+                        <button 
+                          onClick={() => setDonationStep(1)}
+                          className="text-white/50 hover:text-white"
+                        >
+                          Back
+                        </button>
+                        <button 
+                          onClick={() => setDonationStep(3)}
+                          className="btn btn-primary py-2 px-5"
+                          disabled={!donationAmount && !customAmount}
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Step 3: Email and Payment */}
+                  {!isSuccess && donationStep === 3 && (
+                    <form onSubmit={handleSubmitDonation}>
+                      <div className="mb-6">
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-white/70 mb-1">
+                            Email (Optional)
+                          </label>
+                          <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="block w-full px-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
+                            placeholder="your.email@example.com"
+                          />
+                          <p className="mt-1 text-sm text-white/50">We'll send your receipt to this address</p>
+                        </div>
+                        
+                        <div className="mb-4">
+                          <div className="p-4 bg-dark-800/50 rounded-lg">
+                            <div className="flex justify-between mb-2">
+                              <span className="text-white/70">Donation amount:</span>
+                              <span className="font-medium">${customAmount || donationAmount}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-white/70">Type:</span>
+                              <span className="font-medium capitalize">{donationType}</span>
+                            </div>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-white/70">Type:</span>
-                            <span className="font-medium capitalize">{donationType}</span>
+                        </div>
+                        
+                        <div className="glass-panel p-4 mb-4">
+                          <div className="text-sm font-medium mb-2">Payment methods</div>
+                          <div className="space-y-2">
+                            <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                              </svg>
+                              Credit / Debit Card
+                            </div>
+                            <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                              </svg>
+                              Google Pay
+                            </div>
                           </div>
                         </div>
                       </div>
                       
-                      <div className="glass-panel p-4 mb-4">
-                        <div className="text-sm font-medium mb-2">Payment methods</div>
-                        <div className="space-y-2">
-                          <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                            </svg>
-                            Credit / Debit Card
-                          </div>
-                          <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                            Google Pay
-                          </div>
-                        </div>
+                      <div className="flex justify-between">
+                        <button 
+                          type="button"
+                          onClick={() => setDonationStep(2)}
+                          className="text-white/50 hover:text-white"
+                        >
+                          Back
+                        </button>
+                        <button 
+                          type="submit"
+                          className="btn btn-primary py-2 px-5"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <div className="flex items-center">
+                              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Processing...
+                            </div>
+                          ) : (
+                            'Complete Donation'
+                          )}
+                        </button>
                       </div>
-                    </div>
-                    
-                    <div className="flex justify-between">
-                      <button 
-                        type="button"
-                        onClick={() => setDonationStep(2)}
-                        className="text-white/50 hover:text-white"
-                      >
-                        Back
-                      </button>
-                      <button 
-                        type="submit"
-                        className="btn btn-primary py-2 px-5"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? (
-                          <div className="flex items-center">
-                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Processing...
-                          </div>
-                        ) : (
-                          'Complete Donation'
-                        )}
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </Dialog.Panel>
+                    </form>
+                  )}
+                </Dialog.Panel>
+              </Transition.Child>
             </div>
-          </Dialog>
-        )}
-      </AnimatePresence>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   );
 }
+
+export default App;
 
 export default App;
