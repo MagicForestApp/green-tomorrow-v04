@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,36 +6,37 @@
 
 @layer base {
   body {
-    @apply bg-dark-950 text-white font-sans;
+    @apply bg-neutral-950 text-white font-sans;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer components {
   .btn {
-    @apply px-6 py-3 rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center text-center;
+    @apply px-8 py-4 rounded-full font-medium transition-all duration-300 inline-flex items-center justify-center text-center tracking-tight;
   }
   
   .btn-primary {
-    @apply bg-forest-500 text-white hover:bg-forest-600 hover:shadow-glow;
+    @apply bg-forest-500 text-white hover:bg-forest-600;
   }
   
   .btn-outline {
-    @apply border-2 border-white text-white bg-transparent hover:bg-white/10;
+    @apply border border-white/20 text-white bg-white/5 backdrop-blur-sm hover:bg-white/10;
   }
   
   .glass-panel {
-    @apply bg-dark-900/60 backdrop-blur-md border border-dark-800/50 rounded-2xl;
+    @apply bg-neutral-900/30 backdrop-blur-xl border border-neutral-800/20 rounded-2xl;
   }
   
   .progress-bar {
-    @apply h-3 rounded-full bg-dark-800 overflow-hidden relative;
+    @apply h-1.5 rounded-full bg-neutral-800 overflow-hidden relative;
   }
   
   .progress-bar-fill {
-    @apply h-full bg-gradient-to-r from-forest-600 to-forest-400 absolute left-0 top-0 transition-all duration-1000;
+    @apply h-full bg-forest-500 absolute left-0 top-0 transition-all duration-1000 rounded-full;
   }
 }
 
