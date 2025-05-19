@@ -1,52 +1,451 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Dialog } from "@headlessui/react";
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+function App() {
+  const [currentAmount, setCurrentAmount] = useState(12348);
+  const goalAmount = 30000;
+  const progressPercentage = Math.min((currentAmount / goalAmount) * 100, 100);
+  const nextMilestone = 3000;
+  const nextMilestoneText = "Grant Application Fee";
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const [donationStep, setDonationStep] = useState(1);
+  const [donationType, setDonationType] = useState('one-time');
+  const [donationAmount, setDonationAmount] = useState(25);
+  const [customAmount, setCustomAmount] = useState('');
+  const [plantTree, setPlantTree] = useState(true);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
+  // Reset donation form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setTimeout(() => {
+        setDonationStep(1);
+        setDonationType('one-time');
+        setDonationAmount(25);
+        setCustomAmount('');
+        setPlantTree(true);
+        setEmail('');
+        setIsSubmitting(false);
+        setIsSuccess(false);
+      }, 300);
+    }
+  }, [isOpen]);
+
+  // Simulate donation submission
+  const handleSubmitDonation = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate API call delay
+    setTimeout(() => {
+      const amount = customAmount ? parseInt(customAmount, 10) : donationAmount;
+      
+      // Update progress bar
+      setCurrentAmount(prev => prev + amount);
+      
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      
+      // Close modal after success
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 3000);
+    }, 1500);
+  };
+
+  // Handle predefined amount selection
+  const handleAmountSelect = (amount) => {
+    setDonationAmount(amount);
+    setCustomAmount('');
+  };
+
+  // Handle custom amount input
+  const handleCustomAmountChange = (e) => {
+    const value = e.target.value;
+    if (value === '' || /^\d+$/.test(value)) {
+      setCustomAmount(value);
+      setDonationAmount(0);
     }
   };
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="App min-h-screen bg-dark-950 bg-forest-pattern flex flex-col items-center justify-between relative overflow-hidden">
+      {/* Animated background gradients */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-forest-500/10 rounded-full filter blur-[100px] animate-pulse-slow"></div>
+        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-forest-500/5 rounded-full filter blur-[120px] animate-pulse-slow"></div>
+      </div>
+
+      <main className="w-full max-w-4xl mx-auto px-4 py-16 flex flex-col items-center justify-center z-10 flex-grow">
+        {/* Headline */}
+        <motion.h1 
+          className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 tracking-tight"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
-  );
-};
+          PLANT MAGIC FOREST — TOGETHER
+        </motion.h1>
 
-function App() {
-  return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+        {/* Progress Section */}
+        <motion.div 
+          className="w-full glass-panel p-6 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+        >
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-3">
+            <div className="mb-2 md:mb-0">
+              <p className="text-lg font-medium text-white/90">
+                <span className="text-2xl font-bold text-forest-400">${currentAmount.toLocaleString()}</span> of ${goalAmount.toLocaleString()} raised
+              </p>
+            </div>
+            <div className="text-sm text-white/70 font-medium">
+              Next Goal: {nextMilestoneText} — ${nextMilestone.toLocaleString()}
+            </div>
+          </div>
+          
+          <div className="progress-bar mt-2">
+            <motion.div 
+              className="progress-bar-fill"
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercentage}%` }}
+              transition={{ duration: 2, ease: "easeOut" }}
+            ></motion.div>
+          </div>
+        </motion.div>
+
+        {/* Action Buttons */}
+        <motion.div 
+          className="flex flex-col sm:flex-row gap-4 mt-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+        >
+          <motion.button 
+            className="btn btn-primary min-w-[180px]"
+            onClick={() => setIsOpen(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            DONATE NOW
+          </motion.button>
+          
+          <motion.button 
+            className="btn btn-outline min-w-[180px]"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            LEARN MORE
+          </motion.button>
+        </motion.div>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full py-4 px-6 text-center text-white/50 text-sm">
+        <p>© 2025 Magic Forest Association | NIF: G21911227</p>
+        <p className="mt-1 text-xs">Made with Emergent</p>
+      </footer>
+
+      {/* Donation Modal */}
+      <AnimatePresence>
+        {isOpen && (
+          <Dialog
+            static
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            className="relative z-50"
+          >
+            {/* Backdrop */}
+            <motion.div 
+              className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+
+            {/* Modal positioning */}
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              {/* Modal panel */}
+              <Dialog.Panel 
+                as={motion.div}
+                className="glass-panel w-full max-w-md p-6 overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", bounce: 0.3 }}
+              >
+                <Dialog.Title className="text-xl font-bold text-white mb-6 text-center">
+                  {isSuccess
+                    ? "Thank You for Your Donation!"
+                    : donationStep === 1
+                    ? "Choose Donation Type"
+                    : donationStep === 2
+                    ? "Select Amount"
+                    : "Complete Donation"}
+                </Dialog.Title>
+
+                {/* Stepper */}
+                {!isSuccess && (
+                  <div className="flex items-center justify-center mb-6">
+                    {[1, 2, 3].map((step) => (
+                      <div key={step} className="flex items-center">
+                        <div 
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                            donationStep >= step 
+                              ? 'bg-forest-500 text-white' 
+                              : 'bg-dark-700 text-dark-400'
+                          }`}
+                        >
+                          {step}
+                        </div>
+                        {step < 3 && (
+                          <div 
+                            className={`w-10 h-1 mx-1 ${
+                              donationStep > step 
+                                ? 'bg-forest-500' 
+                                : 'bg-dark-700'
+                            }`}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Success message */}
+                {isSuccess && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-forest-500 rounded-full mx-auto flex items-center justify-center mb-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <p className="mb-4">Your donation of ${customAmount || donationAmount} has been received!</p>
+                    <p className="mb-6 text-white/70">A receipt has been sent to your email.</p>
+                    <div className="flex gap-3 justify-center">
+                      <button 
+                        onClick={() => setIsOpen(false)}
+                        className="btn btn-outline py-2 text-sm"
+                      >
+                        Close
+                      </button>
+                      <button 
+                        className="btn btn-primary py-2 text-sm"
+                      >
+                        Register & Personalize Tree
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 1: Donation Type */}
+                {!isSuccess && donationStep === 1 && (
+                  <div>
+                    <div className="bg-dark-800/50 p-3 rounded-xl flex mb-6">
+                      <button 
+                        className={`flex-1 py-2 rounded-lg transition-colors ${
+                          donationType === 'one-time' 
+                            ? 'bg-dark-700 text-white' 
+                            : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
+                        }`}
+                        onClick={() => setDonationType('one-time')}
+                      >
+                        One-time
+                      </button>
+                      <button 
+                        className={`flex-1 py-2 rounded-lg transition-colors ${
+                          donationType === 'monthly' 
+                            ? 'bg-dark-700 text-white' 
+                            : 'text-white/60 hover:bg-dark-800 hover:text-white/80'
+                        }`}
+                        onClick={() => setDonationType('monthly')}
+                      >
+                        Monthly
+                      </button>
+                    </div>
+                    
+                    <div className="text-center mb-4">
+                      <p className="mb-2 text-white/70">
+                        {donationType === 'one-time' 
+                          ? 'Make a one-time contribution to our forest initiative' 
+                          : 'Support us with a recurring monthly donation'}
+                      </p>
+                    </div>
+                    
+                    <div className="flex justify-between mt-8">
+                      <button 
+                        onClick={() => setIsOpen(false)}
+                        className="text-white/50 hover:text-white"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        onClick={() => setDonationStep(2)}
+                        className="btn btn-primary py-2 px-5"
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 2: Select Amount */}
+                {!isSuccess && donationStep === 2 && (
+                  <div>
+                    <div className="grid grid-cols-2 gap-3 mb-4">
+                      {[10, 25, 50, 100].map((amount) => (
+                        <button
+                          key={amount}
+                          className={`py-3 rounded-lg border-2 transition-all ${
+                            donationAmount === amount && !customAmount
+                              ? 'border-forest-500 bg-forest-500/20 text-white'
+                              : 'border-dark-700 text-white/80 hover:border-forest-400 hover:text-white'
+                          }`}
+                          onClick={() => handleAmountSelect(amount)}
+                        >
+                          ${amount}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-white/70 mb-1">
+                        Or enter custom amount
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <span className="text-white/60">$</span>
+                        </div>
+                        <input
+                          type="text"
+                          value={customAmount}
+                          onChange={handleCustomAmountChange}
+                          className="block w-full pl-8 pr-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
+                          placeholder="Custom amount"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center mb-6">
+                      <input
+                        id="plant-tree"
+                        type="checkbox"
+                        checked={plantTree}
+                        onChange={() => setPlantTree(!plantTree)}
+                        className="h-4 w-4 rounded border-dark-600 text-forest-500 focus:ring-forest-500"
+                      />
+                      <label htmlFor="plant-tree" className="ml-2 block text-sm text-white/80">
+                        This donation will plant a tree on our map
+                      </label>
+                    </div>
+                    
+                    <div className="flex justify-between">
+                      <button 
+                        onClick={() => setDonationStep(1)}
+                        className="text-white/50 hover:text-white"
+                      >
+                        Back
+                      </button>
+                      <button 
+                        onClick={() => setDonationStep(3)}
+                        className="btn btn-primary py-2 px-5"
+                        disabled={!donationAmount && !customAmount}
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Step 3: Email and Payment */}
+                {!isSuccess && donationStep === 3 && (
+                  <form onSubmit={handleSubmitDonation}>
+                    <div className="mb-6">
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-white/70 mb-1">
+                          Email (Optional)
+                        </label>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="block w-full px-3 py-2 rounded-lg bg-dark-800 border-dark-700 text-white focus:ring-forest-500 focus:border-forest-500"
+                          placeholder="your.email@example.com"
+                        />
+                        <p className="mt-1 text-sm text-white/50">We'll send your receipt to this address</p>
+                      </div>
+                      
+                      <div className="mb-4">
+                        <div className="p-4 bg-dark-800/50 rounded-lg">
+                          <div className="flex justify-between mb-2">
+                            <span className="text-white/70">Donation amount:</span>
+                            <span className="font-medium">${customAmount || donationAmount}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-white/70">Type:</span>
+                            <span className="font-medium capitalize">{donationType}</span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="glass-panel p-4 mb-4">
+                        <div className="text-sm font-medium mb-2">Payment methods</div>
+                        <div className="space-y-2">
+                          <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                            Credit / Debit Card
+                          </div>
+                          <div className="bg-dark-800/50 p-3 rounded-lg flex items-center text-white/80">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            Google Pay
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between">
+                      <button 
+                        type="button"
+                        onClick={() => setDonationStep(2)}
+                        className="text-white/50 hover:text-white"
+                      >
+                        Back
+                      </button>
+                      <button 
+                        type="submit"
+                        className="btn btn-primary py-2 px-5"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <div className="flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                          </div>
+                        ) : (
+                          'Complete Donation'
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </Dialog.Panel>
+            </div>
+          </Dialog>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
