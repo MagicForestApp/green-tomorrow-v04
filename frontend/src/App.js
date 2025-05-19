@@ -74,11 +74,14 @@ function App() {
   };
 
   return (
-    <div className="App min-h-screen bg-dark-950 bg-forest-pattern flex flex-col items-center justify-between relative overflow-hidden">
-      {/* Animated background gradients */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-1/3 h-1/3 bg-forest-500/10 rounded-full filter blur-[100px] animate-pulse-slow"></div>
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-forest-500/5 rounded-full filter blur-[120px] animate-pulse-slow"></div>
+    <div className="App min-h-screen bg-neutral-950 flex flex-col items-center justify-between relative overflow-hidden">
+      {/* Background pattern for "aliveness" */}
+      <div className="leaf-pattern absolute inset-0 pointer-events-none"></div>
+
+      {/* Animated background gradients - subtle "breathing" effect */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="living-element absolute top-1/4 left-1/4 w-1/3 h-1/3 bg-forest-500/5 rounded-full filter blur-[150px]"></div>
+        <div className="living-element absolute bottom-1/4 right-1/4 w-1/2 h-1/2 bg-forest-500/5 rounded-full filter blur-[180px]" style={{ animationDelay: '-4s' }}></div>
       </div>
 
       <main className="w-full max-w-4xl mx-auto px-4 py-16 flex flex-col items-center justify-center z-10 flex-grow">
