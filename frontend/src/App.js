@@ -41,21 +41,17 @@ function App() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call delay
+    // Simulate API call delay - shorter delay for better UX
     setTimeout(() => {
       const amount = customAmount ? parseInt(customAmount, 10) : donationAmount;
       
       // Update progress bar
       setCurrentAmount(prev => prev + amount);
       
+      // Set success state immediately
       setIsSubmitting(false);
       setIsSuccess(true);
-      
-      // Close modal after success
-      setTimeout(() => {
-        setIsOpen(false);
-      }, 3000);
-    }, 1500);
+    }, 800);
   };
 
   // Handle predefined amount selection
