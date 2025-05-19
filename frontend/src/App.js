@@ -84,41 +84,41 @@ function App() {
         <div className="living-element absolute bottom-1/4 right-1/4 w-1/2 h-1/2 bg-forest-500/5 rounded-full filter blur-[180px]" style={{ animationDelay: '-4s' }}></div>
       </div>
 
-      <main className="w-full max-w-4xl mx-auto px-4 py-16 flex flex-col items-center justify-center z-10 flex-grow">
+      <main className="w-full max-w-3xl mx-auto px-6 py-20 flex flex-col items-center justify-center z-10 flex-grow">
         {/* Headline */}
         <motion.h1 
-          className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-10 tracking-tight"
-          initial={{ opacity: 0, y: -20 }}
+          className="font-sans text-3xl md:text-4xl lg:text-5xl font-medium text-center mb-12 tracking-tight leading-tight"
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          PLANT MAGIC FOREST — TOGETHER
+          PLANT MAGIC FOREST —<br />TOGETHER
         </motion.h1>
 
         {/* Progress Section */}
         <motion.div 
-          className="w-full glass-panel p-6 mb-10"
-          initial={{ opacity: 0, y: 20 }}
+          className="w-full glass-panel p-5 md:p-6 mb-12"
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
         >
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-3">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
             <div className="mb-2 md:mb-0">
-              <p className="text-lg font-medium text-white/90">
-                <span className="text-2xl font-bold text-forest-400">${currentAmount.toLocaleString()}</span> of ${goalAmount.toLocaleString()} raised
+              <p className="text-base md:text-lg font-normal text-white/90">
+                <span className="text-xl md:text-2xl font-medium text-white">${currentAmount.toLocaleString()}</span> of ${goalAmount.toLocaleString()}
               </p>
             </div>
-            <div className="text-sm text-white/70 font-medium">
+            <div className="text-sm text-white/60 font-normal">
               Next Goal: {nextMilestoneText} — ${nextMilestone.toLocaleString()}
             </div>
           </div>
           
-          <div className="progress-bar mt-2">
+          <div className="progress-bar mt-1">
             <motion.div 
               className="progress-bar-fill"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
-              transition={{ duration: 2, ease: "easeOut" }}
+              transition={{ duration: 1.5, ease: "easeOut" }}
             ></motion.div>
           </div>
         </motion.div>
@@ -126,31 +126,31 @@ function App() {
         {/* Action Buttons */}
         <motion.div 
           className="flex flex-col sm:flex-row gap-4 mt-4"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
         >
           <motion.button 
             className="btn btn-primary min-w-[180px]"
             onClick={() => setIsOpen(true)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            DONATE NOW
+            Donate Now
           </motion.button>
           
           <motion.button 
             className="btn btn-outline min-w-[180px]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
           >
-            LEARN MORE
+            Learn More
           </motion.button>
         </motion.div>
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-4 px-6 text-center text-white/50 text-sm">
+      <footer className="w-full py-4 px-6 text-center text-white/30 text-xs">
         <p>© 2025 Magic Forest Association | NIF: G21911227</p>
         <p className="mt-1 text-xs">Made with Emergent</p>
       </footer>
