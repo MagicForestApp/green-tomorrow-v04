@@ -6,101 +6,81 @@
 
 /* Focus state outline */
 *:focus-visible {
-  outline: 2px solid #349C34;
+  outline: 2px solid rgba(255, 255, 255, 0.5);
   outline-offset: 2px;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(26, 26, 38, 0.8);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(52, 156, 52, 0.5);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(52, 156, 52, 0.7);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Button hover effects */
+.btn {
+  letter-spacing: -0.02em;
+}
+
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px -3px rgba(52, 156, 52, 0.3);
+  transform: translateY(-1px);
 }
 
 .btn-outline:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px -3px rgba(255, 255, 255, 0.1);
-}
-
-/* Modal animations */
-.modal-enter {
-  opacity: 0;
-  transform: scale(0.9);
-}
-
-.modal-enter-active {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 300ms, transform 300ms;
-}
-
-.modal-exit {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.modal-exit-active {
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 300ms, transform 300ms;
+  transform: translateY(-1px);
 }
 
 /* Disable button styles */
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-}
-
-/* Glass panel hover effect */
-.glass-panel {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-
-.glass-panel:hover {
-  box-shadow: 0 0 25px 0 rgba(52, 156, 52, 0.1);
-}
-
-/* Progress bar animation */
-@keyframes progress-fill {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: var(--progress-width);
-  }
-}
-
-/* Checkbox styling */
-input[type="checkbox"] {
-  cursor: pointer;
 }
 
 /* Form focus styling */
 input:focus, 
 select:focus, 
 textarea:focus {
-  box-shadow: 0 0 0 2px rgba(52, 156, 52, 0.3);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 /* Text selection color */
 ::selection {
   background: rgba(52, 156, 52, 0.3);
   color: white;
+}
+
+/* Living elements */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.15;
+  }
+}
+
+.living-element {
+  animation: breathe 8s ease-in-out infinite;
+}
+
+/* Simplified leaf pattern */
+.leaf-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23349C34' stroke-width='0.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 3v18'/%3E%3Cpath d='M18 3v18'/%3E%3Cpath d='M3 6h18'/%3E%3Cpath d='M3 18h18'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 60px 60px;
+  background-position: center;
+  opacity: 0.02;
 }
