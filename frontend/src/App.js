@@ -92,7 +92,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          PLANT MAGIC FOREST —<br />TOGETHER
+          PLANT MAGIC FOREST — TOGETHER
         </motion.h1>
 
         {/* Progress Section */}
