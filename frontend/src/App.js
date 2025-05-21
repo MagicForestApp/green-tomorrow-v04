@@ -214,7 +214,7 @@ function App() {
                       {[1, 2, 3].map((step) => (
                         <div key={step} className="flex items-center">
                           <div 
-                            className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${
+                            className={`w-5 h-5 rounded-full flex items-center justify-center ${
                               donationStep >= step 
                                 ? 'bg-forest-500 text-white' 
                                 : 'bg-neutral-800 text-neutral-500'
