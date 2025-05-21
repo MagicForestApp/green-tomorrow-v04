@@ -27,7 +27,7 @@ function App() {
       setTimeout(() => {
         setDonationStep(1);
         setDonationType('one-time');
-        setDonationAmount(10);
+        setDonationAmount(10); // Reset to $10
         setCustomAmount('');
         setIsCustomAmountManuallyEdited(false);
         setPlantTree(true);
