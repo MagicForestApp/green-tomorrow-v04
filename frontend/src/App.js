@@ -354,7 +354,7 @@ function App() {
                         <button 
                           onClick={() => setDonationStep(3)}
                           className="btn btn-primary py-2 px-5 text-sm"
-                          disabled={!donationAmount && !customAmount}
+                          disabled={!customAmount}
                         >
                           Continue
                         </button>
