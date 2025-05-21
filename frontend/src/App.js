@@ -40,13 +40,13 @@ function App() {
   
   // Auto-select minimum amount ($10) when user reaches step 2
   useEffect(() => {
-    if (donationStep === 2 && !isCustomAmountManuallyEdited && !customAmount) {
-      // Select the minimum donation amount ($10)
+    if (donationStep === 2 && !customAmount) {
+      // Always select the minimum donation amount ($10) by default
       const minAmount = 10;
       setDonationAmount(minAmount);
       setCustomAmount(minAmount.toString());
     }
-  }, [donationStep, isCustomAmountManuallyEdited, customAmount]);
+  }, [donationStep, customAmount]);
 
   // Simulate donation submission
   const handleSubmitDonation = (e) => {
