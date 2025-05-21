@@ -384,7 +384,7 @@ function App() {
                           <div className="p-4 bg-neutral-800/30 rounded-lg">
                             <div className="flex justify-between mb-2">
                               <span className="text-white/60 text-sm">Donation amount:</span>
-                              <span className="font-normal">${customAmount || donationAmount}</span>
+                              <span className="font-normal">${customAmount}</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-white/60 text-sm">Type:</span>
