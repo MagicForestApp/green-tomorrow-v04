@@ -67,15 +67,25 @@ function App() {
   };
 
   // Handle predefined amount selection
-  const handleAmountSelect = (amount) => {    
-    // Update the visual selection state
+  const handleAmountSelect = (amount) => {
+    // Check if user is clicking the currently selected button
+    const isReselection = amount === donationAmount;
+    
+    // Always update the visual selection state
     setDonationAmount(amount);
     
-    // When the user clicks on any fixed amount button:
-    // 1. Always update the custom amount field to match the selected button
-    // 2. Reset the manual edit flag so the user's selection is tracked
-    setCustomAmount(amount.toString());
-    setHasEditedCustomAmount(false);
+    // Update the custom amount field in two cases:
+    // 1. If the user hasn't manually edited the custom amount yet
+    // 2. If the user is reselecting the same fixed amount option
+    if (!hasEditedCustomAmount || isReselection) {
+      setCustomAmount(amount.toString());
+      
+      // Reset the manual edit flag only when they explicitly reselect
+      // the same fixed amount, making it "follow" the selection again
+      if (isReselection) {
+        setHasEditedCustomAmount(false);
+      }
+    }
   };
 
   // Handle custom amount input
