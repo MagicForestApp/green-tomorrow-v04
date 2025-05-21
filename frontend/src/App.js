@@ -31,6 +31,7 @@ function App() {
         setDonationAmount(25);
         setCustomAmount('');
         setHasEditedCustomAmount(false);
+        setLastSelectedAmount(null);
         setPlantTree(true);
         setEmail('');
         setIsSubmitting(false);
