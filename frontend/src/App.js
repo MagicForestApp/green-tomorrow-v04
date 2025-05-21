@@ -302,7 +302,7 @@ function App() {
                           <button
                             key={amount}
                             className={`py-3 rounded-lg border transition-all ${
-                              donationAmount === amount && !customAmount
+                              donationAmount === amount
                                 ? 'border-forest-500 bg-forest-500/10 text-white'
                                 : 'border-neutral-800 text-white/80 hover:border-forest-400/30 hover:text-white'
                             }`}
