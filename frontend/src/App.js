@@ -57,7 +57,7 @@ function App() {
   // Handle predefined amount selection
   const handleAmountSelect = (amount) => {
     setDonationAmount(amount);
-    setCustomAmount('');
+    setCustomAmount(amount.toString()); // Auto-populate custom amount field
   };
 
   // Handle custom amount input
@@ -65,7 +65,8 @@ function App() {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
       setCustomAmount(value);
-      setDonationAmount(0);
+      // Keep the selected fixed amount visually selected
+      // donationAmount is used for the visual selection state
     }
   };
 
