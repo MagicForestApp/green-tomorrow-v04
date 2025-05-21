@@ -16,6 +16,7 @@ function App() {
   const [donationAmount, setDonationAmount] = useState(25);
   const [customAmount, setCustomAmount] = useState('');
   const [hasEditedCustomAmount, setHasEditedCustomAmount] = useState(false);
+  const [lastSelectedAmount, setLastSelectedAmount] = useState(null);
   const [plantTree, setPlantTree] = useState(true);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
