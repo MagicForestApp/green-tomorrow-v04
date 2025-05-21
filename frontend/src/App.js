@@ -69,7 +69,13 @@ function App() {
   // Handle predefined amount selection
   const handleAmountSelect = (amount) => {
     setDonationAmount(amount);
-    setCustomAmount(amount.toString()); // Auto-populate custom amount field
+    
+    // Only update custom amount if the user hasn't manually edited it
+    // or if they re-select a fixed amount (overriding their manual edit)
+    if (!hasEditedCustomAmount || amount === parseInt(customAmount, 10)) {
+      setCustomAmount(amount.toString());
+      setHasEditedCustomAmount(false); // Reset the flag when they re-select a fixed amount
+    }
   };
 
   // Handle custom amount input
@@ -77,8 +83,7 @@ function App() {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
       setCustomAmount(value);
-      // Keep the selected fixed amount visually selected
-      // donationAmount is used for the visual selection state
+      setHasEditedCustomAmount(true); // Mark that the user has manually edited the amount
     }
   };
 
