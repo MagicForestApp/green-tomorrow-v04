@@ -365,7 +365,10 @@ function App() {
                       
                       <div className="flex justify-between">
                         <button 
-                          onClick={() => setDonationStep(1)}
+                          onClick={() => {
+                            // Immediately set the step
+                            setDonationStep(1);
+                          }}
                           className="text-white/40 hover:text-white text-sm"
                         >
                           Back
