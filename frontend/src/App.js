@@ -78,17 +78,15 @@ function App() {
     // Three distinct cases for updating the custom amount:
     
     // Case 1: Initial selection or normal selection (no manual edits yet)
-    if (!hasEditedCustomAmount) {
+    if (!isCustomAmountManuallyEdited) {
       setCustomAmount(amount.toString());
-      setLastSelectedAmount(amount);
     } 
     // Case 2: User reselects the same button they previously selected
     else if (isReselection) {
       setCustomAmount(amount.toString());
       
       // Now user is back in "follow selection" mode
-      setHasEditedCustomAmount(false);
-      setLastSelectedAmount(amount);
+      setIsCustomAmountManuallyEdited(false);
     }
     // Case 3: User has edited manually and clicks a different button
     // Don't change the custom amount, just update the visual selection
