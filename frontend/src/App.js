@@ -66,7 +66,7 @@ function App() {
     }, 800);
   };
 
-  // Handle predefined amount selection
+  // Handle predefined amount selection - Implemented for Magic Forest Association
   const handleAmountSelect = (amount) => {
     // Always update the visual selection state
     setDonationAmount(amount);
