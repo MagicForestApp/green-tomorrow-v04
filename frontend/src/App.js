@@ -13,10 +13,9 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [donationStep, setDonationStep] = useState(1);
   const [donationType, setDonationType] = useState('one-time');
-  const [donationAmount, setDonationAmount] = useState(25);
+  const [donationAmount, setDonationAmount] = useState(10); // Default to $10
   const [customAmount, setCustomAmount] = useState('');
-  const [hasEditedCustomAmount, setHasEditedCustomAmount] = useState(false);
-  const [lastSelectedAmount, setLastSelectedAmount] = useState(null);
+  const [isCustomAmountManuallyEdited, setIsCustomAmountManuallyEdited] = useState(false);
   const [plantTree, setPlantTree] = useState(true);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
