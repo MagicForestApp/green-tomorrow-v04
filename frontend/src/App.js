@@ -96,7 +96,7 @@ function App() {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
       setCustomAmount(value);
-      setHasEditedCustomAmount(true); // Mark that the user has manually edited the amount
+      setIsCustomAmountManuallyEdited(true); // Mark that the user has manually edited the amount
     }
   };
 
