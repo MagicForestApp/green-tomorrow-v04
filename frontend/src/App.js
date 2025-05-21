@@ -225,7 +225,7 @@ function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
-                      <p className="mb-4">Your donation of ${customAmount || donationAmount} has been received</p>
+                      <p className="mb-4">Your donation of ${customAmount} has been received</p>
                       <p className="mb-6 text-white/60 text-sm">A receipt has been sent to your email</p>
                       <div className="flex gap-3 justify-center">
                         <button 
