@@ -29,6 +29,7 @@ function App() {
         setDonationType('one-time');
         setDonationAmount(25);
         setCustomAmount('');
+        setHasEditedCustomAmount(false);
         setPlantTree(true);
         setEmail('');
         setIsSubmitting(false);
@@ -36,6 +37,16 @@ function App() {
       }, 300);
     }
   }, [isOpen]);
+  
+  // Auto-select minimum amount ($10) when user reaches step 2
+  useEffect(() => {
+    if (donationStep === 2 && !hasEditedCustomAmount && !customAmount) {
+      // Select the minimum donation amount ($10)
+      const minAmount = 10;
+      setDonationAmount(minAmount);
+      setCustomAmount(minAmount.toString());
+    }
+  }, [donationStep, hasEditedCustomAmount, customAmount]);
 
   // Simulate donation submission
   const handleSubmitDonation = (e) => {
