@@ -74,16 +74,19 @@ function App() {
     // Always update the visual selection state
     setDonationAmount(amount);
     
-    // Only update the custom amount in these two cases:
-    // 1. Initial use (no manual edits yet)
-    // 2. User reselects the same amount button to reset to that value
+    // Update the custom amount field in these cases:
+    // 1. If the user hasn't manually edited the custom amount yet
+    // 2. If the user is reselecting the same amount button
     if (!hasEditedCustomAmount || isReselection) {
       setCustomAmount(amount.toString());
+      
+      // If user is reselecting the same amount button after a manual edit,
+      // synchronize the values and automatically follow selections again until
+      // the next manual edit
+      if (isReselection && hasEditedCustomAmount) {
+        setHasEditedCustomAmount(false);
+      }
     }
-    
-    // We never want to reset hasEditedCustomAmount to false once it's true,
-    // even when reselecting the same button, to maintain the manual override
-    // behavior for other buttons
   };
 
   // Handle custom amount input
