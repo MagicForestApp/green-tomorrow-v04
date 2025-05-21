@@ -68,19 +68,21 @@ function App() {
 
   // Handle predefined amount selection
   const handleAmountSelect = (amount) => {
-    // If user re-clicks on a predefined button they previously clicked
+    // Check if user is clicking the currently selected button
     const isClickingSameButton = amount === donationAmount;
     
-    // Update the visual selection
+    // Always update the visual selection state
     setDonationAmount(amount);
     
-    // Two cases where we update the custom amount:
-    // 1. User hasn't manually edited the custom amount (initial selection or switching between options)
-    // 2. User is re-clicking the same predefined amount button (overriding their manual edit)
+    // When to update the custom amount field:
+    // 1. When user hasn't manually edited it - follow the button selection
+    // 2. When user re-clicks the same button they already selected - override their manual edit
     if (!hasEditedCustomAmount || isClickingSameButton) {
       setCustomAmount(amount.toString());
       setHasEditedCustomAmount(false); // Reset the manual edit flag
     }
+    // Note: if user has manually edited and clicks a different button,
+    // we keep their custom value but update the visual selection
   };
 
   // Handle custom amount input
