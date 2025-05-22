@@ -73,11 +73,38 @@ function App() {
   useEffect(() => {
     // Very basic validation rules
     const isNumberValid = cardNumber.replace(/\s/g, '').length === 16;
-    const isExpiryValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
+    const isExpiryFormatValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
     const isCvcValid = /^\d{3}$/.test(cardCvc);
     
-    setIsCardValid(isNumberValid && isExpiryValid && isCvcValid);
-  }, [cardNumber, cardExpiry, cardCvc]);
+    // Check if all fields are valid for the overall card validation
+    setIsCardValid(isNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid);
+  }, [cardNumber, cardExpiry, cardCvc, isExpiryValid]);
+  
+  // Validate that expiry date is not in the past
+  useEffect(() => {
+    // Only validate after full MM/YY is entered
+    if (/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+      const [month, year] = cardExpiry.split('/').map(part => parseInt(part, 10));
+      
+      // Convert to full year (20XX)
+      const fullYear = 2000 + year;
+      
+      // Get current date for comparison
+      const now = new Date();
+      const currentMonth = now.getMonth() + 1; // getMonth() is 0-indexed
+      const currentYear = now.getFullYear();
+      
+      // Check if date is in the past
+      const isInPast = (fullYear < currentYear) || 
+                       (fullYear === currentYear && month < currentMonth);
+      
+      // Update validity state
+      setIsExpiryValid(!isInPast);
+    } else {
+      // If format is not complete, don't show error yet
+      setIsExpiryValid(true);
+    }
+  }, [cardExpiry]);
 
   // Card input formatters
   const formatCardNumber = (value) => {
