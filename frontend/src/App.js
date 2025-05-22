@@ -61,6 +61,16 @@ function App() {
       setCustomAmount(minAmount.toString());
     }
   }, [donationStep, customAmount]);
+  
+  // Validate credit card information
+  useEffect(() => {
+    // Very basic validation rules
+    const isNumberValid = cardNumber.replace(/\s/g, '').length === 16;
+    const isExpiryValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
+    const isCvcValid = /^\d{3}$/.test(cardCvc);
+    
+    setIsCardValid(isNumberValid && isExpiryValid && isCvcValid);
+  }, [cardNumber, cardExpiry, cardCvc]);
 
   // Simulate donation submission
   const handleSubmitDonation = (e) => {
