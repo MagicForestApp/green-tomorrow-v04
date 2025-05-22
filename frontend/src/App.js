@@ -575,10 +575,12 @@ function App() {
                                     <input
                                       type="text"
                                       value={cardExpiry}
-                                      onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
+                                      onChange={handleExpiryChange}
+                                      onKeyDown={(e) => handleKeyDown(e, 'expiry')}
                                       className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
                                       placeholder="MM/YY"
                                       maxLength={5}
+                                      ref={cardExpiryInputRef}
                                     />
                                   </div>
                                   
