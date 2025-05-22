@@ -139,12 +139,26 @@ function App() {
   
   // Handle backspace navigation
   const handleKeyDown = (e, field) => {
-    // If backspace is pressed on an empty field, focus the previous field
-    if (e.key === 'Backspace' && e.target.value === '') {
+    // Check if the field is empty or will be empty after this backspace
+    const willBeEmpty = e.key === 'Backspace' && (
+      e.target.value === '' || 
+      (e.target.selectionStart === 0 && e.target.selectionEnd === e.target.value.length) ||
+      (e.target.selectionStart === e.target.selectionEnd && e.target.selectionStart === 1)
+    );
+    
+    if (willBeEmpty) {
       if (field === 'expiry') {
         setTimeout(() => cardNumberInputRef.current?.focus(), 10);
+        // Prevent default to avoid any unwanted character deletion
+        if (e.target.value === '') {
+          e.preventDefault();
+        }
       } else if (field === 'cvc') {
         setTimeout(() => cardExpiryInputRef.current?.focus(), 10);
+        // Prevent default to avoid any unwanted character deletion
+        if (e.target.value === '') {
+          e.preventDefault();
+        }
       }
     }
   };
