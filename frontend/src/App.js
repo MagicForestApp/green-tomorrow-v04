@@ -638,6 +638,9 @@ function App() {
                                     placeholder="1234 5678 9012 3456"
                                     maxLength={19}
                                     ref={cardNumberInputRef}
+                                    inputMode="numeric"
+                                    pattern="\d*"
+                                    autoComplete="cc-number"
                                   />
                                 </div>
                                 
