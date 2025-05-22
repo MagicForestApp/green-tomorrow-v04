@@ -109,13 +109,13 @@ function App() {
   
   // Auto-scroll to Complete Donation button when all fields are valid
   useEffect(() => {
-    // Check if all card fields are valid and filled
-    const isCardNumberValid = cardNumber.replace(/\s/g, '').length === 16;
+    // Check if all required fields are filled (card number validation disabled)
+    const hasCardNumber = cardNumber.trim() !== ''; // Any card number is accepted
     const isExpiryFormatValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
     const isCvcValid = /^\d{3}$/.test(cardCvc);
     
-    // Only scroll when all fields are valid and filled and we're on step 3 (payment)
-    if (isCardNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid && 
+    // Only scroll when required fields are filled and we're on step 3 (payment)
+    if (hasCardNumber && isExpiryFormatValid && isCvcValid && isExpiryValid && 
         completeButtonRef.current && donationStep === 3 && selectedPaymentMethod === 'card') {
       // Use a small timeout to ensure DOM updates are complete and to avoid interfering with focus changes
       setTimeout(() => {
