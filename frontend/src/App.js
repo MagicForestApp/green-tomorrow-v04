@@ -753,6 +753,7 @@ function App() {
                           type="submit"
                           className="btn btn-primary py-2 px-5 text-sm"
                           disabled={isSubmitting}
+                          ref={completeButtonRef}
                         >
                           {isSubmitting ? (
                             <div className="flex items-center">
