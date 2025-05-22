@@ -105,6 +105,50 @@ function App() {
     return value;
   };
   
+  // Handle card number input
+  const handleCardNumberChange = (e) => {
+    const value = e.target.value;
+    const formattedValue = formatCardNumber(value);
+    setCardNumber(formattedValue);
+    
+    // Auto-focus to expiry field when card number is complete (16 digits + spaces)
+    if (formattedValue.replace(/\s/g, '').length === 16) {
+      setTimeout(() => cardExpiryInputRef.current?.focus(), 10);
+    }
+  };
+  
+  // Handle expiry input
+  const handleExpiryChange = (e) => {
+    const value = e.target.value;
+    const formattedValue = formatExpiry(value);
+    setCardExpiry(formattedValue);
+    
+    // Auto-focus to CVC field when expiry is complete (MM/YY format)
+    if (/^\d{2}\/\d{2}$/.test(formattedValue)) {
+      setTimeout(() => cardCvcInputRef.current?.focus(), 10);
+    }
+  };
+  
+  // Handle CVC input
+  const handleCvcChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    if (value.length <= 3) {
+      setCardCvc(value);
+    }
+  };
+  
+  // Handle backspace navigation
+  const handleKeyDown = (e, field) => {
+    // If backspace is pressed on an empty field, focus the previous field
+    if (e.key === 'Backspace' && e.target.value === '') {
+      if (field === 'expiry') {
+        setTimeout(() => cardNumberInputRef.current?.focus(), 10);
+      } else if (field === 'cvc') {
+        setTimeout(() => cardExpiryInputRef.current?.focus(), 10);
+      }
+    }
+  };
+  
   // Handle payment method selection
   const handlePaymentMethodSelect = (method) => {
     if (selectedPaymentMethod === method) {
@@ -112,6 +156,11 @@ function App() {
       setSelectedPaymentMethod(null);
     } else {
       setSelectedPaymentMethod(method);
+      
+      // Auto-focus card number field when Credit/Debit Card is selected
+      if (method === 'card') {
+        setTimeout(() => cardNumberInputRef.current?.focus(), 100);
+      }
     }
   };
   const handleSubmitDonation = (e) => {
