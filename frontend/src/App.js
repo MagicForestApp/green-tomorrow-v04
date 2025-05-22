@@ -27,6 +27,11 @@ function App() {
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvc, setCardCvc] = useState('');
   const [isCardValid, setIsCardValid] = useState(false);
+  
+  // Refs for credit card input fields
+  const cardNumberInputRef = useRef(null);
+  const cardExpiryInputRef = useRef(null);
+  const cardCvcInputRef = useRef(null);
 
   // Reset donation form when modal closes
   useEffect(() => {
