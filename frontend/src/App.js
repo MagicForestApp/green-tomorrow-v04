@@ -591,15 +591,12 @@ function App() {
                                     <input
                                       type="text"
                                       value={cardCvc}
-                                      onChange={(e) => {
-                                        const value = e.target.value.replace(/[^0-9]/g, '');
-                                        if (value.length <= 3) {
-                                          setCardCvc(value);
-                                        }
-                                      }}
+                                      onChange={handleCvcChange}
+                                      onKeyDown={(e) => handleKeyDown(e, 'cvc')}
                                       className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
                                       placeholder="123"
                                       maxLength={3}
+                                      ref={cardCvcInputRef}
                                     />
                                   </div>
                                 </div>
