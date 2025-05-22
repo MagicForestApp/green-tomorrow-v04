@@ -20,6 +20,13 @@ function App() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  
+  // Payment method related states
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardExpiry, setCardExpiry] = useState('');
+  const [cardCvc, setCardCvc] = useState('');
+  const [isCardValid, setIsCardValid] = useState(false);
 
   // Reset donation form when modal closes
   useEffect(() => {
