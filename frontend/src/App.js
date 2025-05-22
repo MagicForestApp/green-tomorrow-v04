@@ -114,17 +114,28 @@ function App() {
     const isExpiryFormatValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
     const isCvcValid = /^\d{3}$/.test(cardCvc);
     
-    // Only scroll when all fields are valid and filled
-    if (isCardNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid && completeButtonRef.current) {
-      // Use a small timeout to ensure DOM updates are complete
+    // Only scroll when all fields are valid and filled and we're on step 3 (payment)
+    if (isCardNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid && 
+        completeButtonRef.current && donationStep === 3 && selectedPaymentMethod === 'card') {
+      // Use a small timeout to ensure DOM updates are complete and to avoid interfering with focus changes
       setTimeout(() => {
-        completeButtonRef.current.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center'
-        });
-      }, 100);
+        // Check if button is already visible in the viewport
+        const rect = completeButtonRef.current.getBoundingClientRect();
+        const isVisible = (
+          rect.top >= 0 &&
+          rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+        
+        // Only scroll if the button is not fully visible
+        if (!isVisible) {
+          completeButtonRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        }
+      }, 300);  // Longer timeout to ensure all other updates are complete
     }
-  }, [cardNumber, cardExpiry, cardCvc, isExpiryValid]);
+  }, [cardNumber, cardExpiry, cardCvc, isExpiryValid, donationStep, selectedPaymentMethod]);
 
   // Card input formatters
   const formatCardNumber = (value) => {
