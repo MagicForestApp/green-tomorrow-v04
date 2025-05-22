@@ -139,17 +139,19 @@ function App() {
 
   // Card input formatters
   const formatCardNumber = (value) => {
-    // Remove all non-digits
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    // Remove spaces and non-digits
+    const digitsOnly = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     
-    // Split into groups of 4 digits
-    const parts = [];
-    for (let i = 0, len = v.length; i < len; i += 4) {
-      parts.push(v.substring(i, i + 4));
+    // Format with spaces after every 4 digits
+    let formattedValue = '';
+    for (let i = 0; i < digitsOnly.length; i++) {
+      if (i > 0 && i % 4 === 0) {
+        formattedValue += ' ';
+      }
+      formattedValue += digitsOnly[i];
     }
     
-    // Return the formatted string or the original if nothing to format
-    return parts.length ? parts.join(' ') : value;
+    return formattedValue || value;
   };
   
   const formatExpiry = (value) => {
