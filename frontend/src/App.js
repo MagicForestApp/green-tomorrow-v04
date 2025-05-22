@@ -41,6 +41,13 @@ function App() {
         setEmail('');
         setIsSubmitting(false);
         setIsSuccess(false);
+        
+        // Reset payment related states
+        setSelectedPaymentMethod(null);
+        setCardNumber('');
+        setCardExpiry('');
+        setCardCvc('');
+        setIsCardValid(false);
       }, 300);
     }
   }, [isOpen]);
