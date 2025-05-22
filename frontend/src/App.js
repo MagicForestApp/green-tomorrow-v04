@@ -692,7 +692,6 @@ function App() {
                                       maxLength={5}
                                       ref={cardExpiryInputRef}
                                       inputMode="numeric"
-                                      pattern="\d*"
                                       autoComplete="cc-exp"
                                     />
                                     {!isExpiryValid && cardExpiry && (
