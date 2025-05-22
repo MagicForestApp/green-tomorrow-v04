@@ -484,19 +484,87 @@ function App() {
                         <div className="glass-panel p-4 mb-5">
                           <div className="text-sm font-normal mb-3">Payment methods</div>
                           <div className="space-y-2">
-                            <div className="bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80">
+                            {/* Credit/Debit Card Option */}
+                            <div 
+                              className={`bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80 cursor-pointer ${selectedPaymentMethod === 'card' ? 'ring-1 ring-forest-500' : ''}`}
+                              onClick={() => handlePaymentMethodSelect('card')}
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                               </svg>
                               Credit / Debit Card
                             </div>
-                            <div className="bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80">
+                            
+                            {/* Credit Card Form */}
+                            {selectedPaymentMethod === 'card' && (
+                              <div className={`p-3 space-y-3 rounded-lg bg-neutral-900/50 ${isCardValid ? 'border border-forest-500' : 'border border-neutral-700'}`}>
+                                <div>
+                                  <label className="block text-sm font-normal text-white/60 mb-1.5">
+                                    Card number
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={cardNumber}
+                                    onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                                    className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
+                                    placeholder="1234 5678 9012 3456"
+                                    maxLength={19}
+                                  />
+                                </div>
+                                
+                                <div className="flex space-x-3">
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-normal text-white/60 mb-1.5">
+                                      Expiry (MM/YY)
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={cardExpiry}
+                                      onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
+                                      className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
+                                      placeholder="MM/YY"
+                                      maxLength={5}
+                                    />
+                                  </div>
+                                  
+                                  <div className="flex-1">
+                                    <label className="block text-sm font-normal text-white/60 mb-1.5">
+                                      CVC
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={cardCvc}
+                                      onChange={(e) => {
+                                        const value = e.target.value.replace(/[^0-9]/g, '');
+                                        if (value.length <= 3) {
+                                          setCardCvc(value);
+                                        }
+                                      }}
+                                      className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
+                                      placeholder="123"
+                                      maxLength={3}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Apple Pay Option */}
+                            <div 
+                              className={`bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80 cursor-pointer ${selectedPaymentMethod === 'apple' ? 'ring-1 ring-forest-500' : ''}`}
+                              onClick={() => handlePaymentMethodSelect('apple')}
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 18c-1.683 0-3.258-.462-4.592-1.258l-.005-.002c-1.33-.793-2.5-1.978-3.208-3.496-.9-1.923-.9-3.7 0-5.224.65-1.12 1.655-1.95 2.984-2.624.328-.167.68-.165 1.008 0 .596.3 1.113.825 1.413 1.5.244.542.487 1.25.246 2.016-.055.17-.11.415-.135.645-.17.135-.1.27.05.405l.03.03c.075.075.15.15.255.195.15.076.315.107.48.075.315-.06.63-.255.945-.496l.75-.571c1.05-.797 2.355-.797 3.405-.001l.751.572c.315.24.63.436.945.496.165.03.33 0 .48-.075.105-.046.18-.12.255-.195l.03-.03c.15-.135.222-.27.204-.405-.025-.23-.08-.475-.134-.645-.24-.766.002-1.474.246-2.016.3-.675.817-1.2 1.413-1.5.328-.166.68-.167 1.008 0 1.33.675 2.334 1.504 2.984 2.624.9 1.524.9 3.3 0 5.224-.708 1.518-1.877 2.703-3.203 3.493l-.01.005C15.258 17.538 13.683 18 12 18z" />
                               </svg>
                               Apple Pay
                             </div>
-                            <div className="bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80">
+                            
+                            {/* Google Pay Option */}
+                            <div 
+                              className={`bg-neutral-800/50 p-2.5 rounded-lg flex items-center text-white/80 cursor-pointer ${selectedPaymentMethod === 'google' ? 'ring-1 ring-forest-500' : ''}`}
+                              onClick={() => handlePaymentMethodSelect('google')}
+                            >
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                               </svg>
