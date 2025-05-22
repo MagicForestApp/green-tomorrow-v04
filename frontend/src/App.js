@@ -684,6 +684,9 @@ function App() {
                                       placeholder="123"
                                       maxLength={3}
                                       ref={cardCvcInputRef}
+                                      inputMode="numeric"
+                                      pattern="\d*"
+                                      autoComplete="cc-csc"
                                     />
                                   </div>
                                 </div>
