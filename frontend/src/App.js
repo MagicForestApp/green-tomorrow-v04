@@ -126,24 +126,27 @@ function App() {
     const digitsOnly = value.replace(/\D/g, '');
     
     if (digitsOnly.length > 0) {
-      // Handle MM part (first two digits)
-      if (digitsOnly.length <= 2) {
-        formattedValue = digitsOnly;
-        // If user enters a value > 1, format it as a valid month
-        if (digitsOnly.length === 1 && parseInt(digitsOnly, 10) > 1) {
-          formattedValue = `0${digitsOnly}`;
-        }
-      } 
-      // Handle MM/YY format
-      else {
-        // First ensure month is valid (01-12)
-        let month = digitsOnly.substring(0, 2);
-        if (parseInt(month, 10) > 12) {
+      // Extract month digits (first two digits)
+      let month = digitsOnly.substring(0, Math.min(2, digitsOnly.length));
+      
+      // Validate month when it's 2 digits
+      if (month.length === 2) {
+        const monthNum = parseInt(month, 10);
+        if (monthNum > 12) {
           month = '12';
-        } else if (parseInt(month, 10) === 0) {
+        } else if (monthNum === 0) {
           month = '01';
         }
-        
+      }
+      // Auto-format single digit > 1
+      else if (month.length === 1 && parseInt(month, 10) > 1) {
+        month = `0${month}`;
+      }
+      
+      // Format with or without year portion
+      if (digitsOnly.length <= 2) {
+        formattedValue = month;
+      } else {
         const year = digitsOnly.substring(2, 4);
         formattedValue = `${month}/${year}`;
       }
