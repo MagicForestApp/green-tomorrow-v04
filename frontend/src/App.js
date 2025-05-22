@@ -54,6 +54,7 @@ function App() {
         setCardExpiry('');
         setCardCvc('');
         setIsCardValid(false);
+        setIsExpiryValid(true);
       }, 300);
     }
   }, [isOpen]);
