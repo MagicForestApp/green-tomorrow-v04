@@ -33,6 +33,7 @@ function App() {
   const cardNumberInputRef = useRef(null);
   const cardExpiryInputRef = useRef(null);
   const cardCvcInputRef = useRef(null);
+  const completeButtonRef = useRef(null);
 
   // Reset donation form when modal closes
   useEffect(() => {
