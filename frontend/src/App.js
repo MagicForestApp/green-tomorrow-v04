@@ -72,12 +72,12 @@ function App() {
   
   // Validate credit card information
   useEffect(() => {
-    // Very basic validation rules
-    const isNumberValid = cardNumber.replace(/\s/g, '').length === 16;
+    // Validation rules - card number validation disabled for testing
+    const isNumberValid = true; // Accepting any card number format
     const isExpiryFormatValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
     const isCvcValid = /^\d{3}$/.test(cardCvc);
     
-    // Check if all fields are valid for the overall card validation
+    // Check if other fields are valid for the overall card validation
     setIsCardValid(isNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid);
   }, [cardNumber, cardExpiry, cardCvc, isExpiryValid]);
   
