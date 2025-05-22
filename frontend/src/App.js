@@ -651,11 +651,18 @@ function App() {
                                       value={cardExpiry}
                                       onChange={handleExpiryChange}
                                       onKeyDown={(e) => handleKeyDown(e, 'expiry')}
-                                      className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
+                                      className={`block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30 ${
+                                        !isExpiryValid && cardExpiry ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500/30' : ''
+                                      }`}
                                       placeholder="MM/YY"
                                       maxLength={5}
                                       ref={cardExpiryInputRef}
                                     />
+                                    {!isExpiryValid && cardExpiry && (
+                                      <p className="mt-1 text-xs text-red-500">
+                                        Expiry date cannot be in the past
+                                      </p>
+                                    )}
                                   </div>
                                   
                                   <div className="flex-1">
