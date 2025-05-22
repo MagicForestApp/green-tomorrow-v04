@@ -559,10 +559,11 @@ function App() {
                                   <input
                                     type="text"
                                     value={cardNumber}
-                                    onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                                    onChange={handleCardNumberChange}
                                     className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
                                     placeholder="1234 5678 9012 3456"
                                     maxLength={19}
+                                    ref={cardNumberInputRef}
                                   />
                                 </div>
                                 
