@@ -668,7 +668,7 @@ function App() {
                                     onChange={handleCardNumberChange}
                                     className="block w-full px-3 py-2 rounded-lg bg-neutral-800/80 border-neutral-700 text-white focus:ring-forest-500/30 focus:border-forest-500/30"
                                     placeholder="1234 5678 9012 3456"
-                                    maxLength={19}
+                                    maxLength={24}
                                     ref={cardNumberInputRef}
                                     inputMode="numeric"
                                     pattern="\d*"
