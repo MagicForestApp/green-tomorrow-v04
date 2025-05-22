@@ -27,6 +27,7 @@ function App() {
   const [cardExpiry, setCardExpiry] = useState('');
   const [cardCvc, setCardCvc] = useState('');
   const [isCardValid, setIsCardValid] = useState(false);
+  const [isExpiryValid, setIsExpiryValid] = useState(true);
   
   // Refs for credit card input fields
   const cardNumberInputRef = useRef(null);
