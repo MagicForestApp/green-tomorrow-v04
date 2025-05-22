@@ -171,8 +171,10 @@ function App() {
     const formattedValue = formatCardNumber(value);
     setCardNumber(formattedValue);
     
-    // Auto-focus to expiry field when card number is complete (16 digits + spaces)
-    if (formattedValue.replace(/\s/g, '').length === 16) {
+    // Auto-focus to expiry field after at least 13 digits entered (minimum valid card length)
+    // Note: No strict validation - this is just for better UX flow
+    const digitCount = formattedValue.replace(/\s/g, '').length;
+    if (digitCount >= 13 && digitCount <= 19) { // Common card number lengths are 13-19 digits
       setTimeout(() => cardExpiryInputRef.current?.focus(), 10);
     }
   };
