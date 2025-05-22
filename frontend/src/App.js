@@ -660,6 +660,9 @@ function App() {
                                       placeholder="MM/YY"
                                       maxLength={5}
                                       ref={cardExpiryInputRef}
+                                      inputMode="numeric"
+                                      pattern="\d*"
+                                      autoComplete="cc-exp"
                                     />
                                     {!isExpiryValid && cardExpiry && (
                                       <p className="mt-1 text-xs text-red-500">
