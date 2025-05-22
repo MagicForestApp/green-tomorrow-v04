@@ -120,7 +120,35 @@ function App() {
   // Handle expiry input
   const handleExpiryChange = (e) => {
     const value = e.target.value;
-    const formattedValue = formatExpiry(value);
+    let formattedValue = value;
+    
+    // Strip all non-digits
+    const digitsOnly = value.replace(/\D/g, '');
+    
+    if (digitsOnly.length > 0) {
+      // Handle MM part (first two digits)
+      if (digitsOnly.length <= 2) {
+        formattedValue = digitsOnly;
+        // If user enters a value > 1, format it as a valid month
+        if (digitsOnly.length === 1 && parseInt(digitsOnly, 10) > 1) {
+          formattedValue = `0${digitsOnly}`;
+        }
+      } 
+      // Handle MM/YY format
+      else {
+        // First ensure month is valid (01-12)
+        let month = digitsOnly.substring(0, 2);
+        if (parseInt(month, 10) > 12) {
+          month = '12';
+        } else if (parseInt(month, 10) === 0) {
+          month = '01';
+        }
+        
+        const year = digitsOnly.substring(2, 4);
+        formattedValue = `${month}/${year}`;
+      }
+    }
+    
     setCardExpiry(formattedValue);
     
     // Auto-focus to CVC field when expiry is complete (MM/YY format)
