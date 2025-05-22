@@ -671,7 +671,6 @@ function App() {
                                     maxLength={24}
                                     ref={cardNumberInputRef}
                                     inputMode="numeric"
-                                    pattern="\d*"
                                     autoComplete="cc-number"
                                   />
                                 </div>
