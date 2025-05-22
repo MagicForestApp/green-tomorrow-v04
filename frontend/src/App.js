@@ -106,6 +106,25 @@ function App() {
       setIsExpiryValid(true);
     }
   }, [cardExpiry]);
+  
+  // Auto-scroll to Complete Donation button when all fields are valid
+  useEffect(() => {
+    // Check if all card fields are valid and filled
+    const isCardNumberValid = cardNumber.replace(/\s/g, '').length === 16;
+    const isExpiryFormatValid = /^\d{2}\/\d{2}$/.test(cardExpiry);
+    const isCvcValid = /^\d{3}$/.test(cardCvc);
+    
+    // Only scroll when all fields are valid and filled
+    if (isCardNumberValid && isExpiryFormatValid && isCvcValid && isExpiryValid && completeButtonRef.current) {
+      // Use a small timeout to ensure DOM updates are complete
+      setTimeout(() => {
+        completeButtonRef.current.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center'
+        });
+      }, 100);
+    }
+  }, [cardNumber, cardExpiry, cardCvc, isExpiryValid]);
 
   // Card input formatters
   const formatCardNumber = (value) => {
